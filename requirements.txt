@@ -27,7 +27,7 @@ packaging==24.1
 pandas==2.2.2
 pillow==10.4.0
 proglog==0.1.10
-# psycopg2==2.9.10
+
 pydub==0.25.1
 PyMySQL==1.1.1
 pyparsing==3.1.4
@@ -51,6 +51,4 @@ urllib3==2.2.2
 whitenoise==6.8.2
 
 
-#  --superuser--
-# username: Malicious
-# password: 1423 
+
