@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/predict.css' %}">
+    <title>URL Prediction</title>
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'predict_url' %}">Predict</a></li>
+            <li><a href="{% url 'history_view' %}">History</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <header>
+            <h1>URL Prediction</h1>
+            <p>Predict the type of URL to determine its safety.</p>
+        </header>
+
+        <section class="form-section">
+            <form method="post">
+                {% csrf_token %}
+                <label for="url">Enter URL:</label>
+                {{ form.url }}
+                <button type="submit" class="btn-submit">Predict</button>
+            </form>
+
+            <!-- Display error message if available -->
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+        </section>
+
+        <!-- Display the prediction result if available -->
+        {% if url and predicted_label %}
+        <section class="result-section {% if predicted_label == 'benign' %}safe-background{% else %}unsafe-background{% endif %}">
+            <h2>Prediction Result</h2>
+            <p><strong>URL:</strong> {{ url }}</p>
+            <p><strong>Predicted Label:</strong> {{ predicted_label }}</p>
+
+            {% if predicted_label == 'benign' %}
+                <p class="safe">The above URL is Safe to Browse</p>
+                <a href="{{ url }}" target="_blank" class="btn safe-btn">Continue</a>
+            {% else %}
+                <p class="unsafe">The above URL is Not Safe to Browse</p>
+                <a href="{{ url }}" target="_blank" class="btn unsafe-btn">Proceed with Caution</a>
+            {% endif %}
+            <h3>Prediction Probabilities:</h3>
+            <img src="data:image/png;base64,{{ graph }}" alt="Prediction Probabilities">
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    {% if messages %}
+    <ul id="messages" class="popup message-popup">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    {% if request.session.username %}
+    <div id="welcome-popup" class="popup">
+        <h2>Welcome, {{ request.session.username }}!</h2>
+    </div>
+    
+    <button type="submit"><a href='signout'>SIGN OUT</a></button>
+    
+    {% else %}
+    <button type="submit"><a href='signin'>SIGN IN</a></button>
+    <button type="submit"><a href='signup'>SIGN UP</a></button>
+    {% endif %}
+
+    
+
+    <script>
+        // Show the welcome popup for 10 seconds
+        var welcomePopup = document.getElementById("welcome-popup");
+        if (welcomePopup) {
+            welcomePopup.style.display = "block";
+            setTimeout(function() {
+                welcomePopup.style.display = "none";
+            }, 10000); // 10000 milliseconds = 10 seconds
+        }
+
+        // Show Django messages for 5 seconds
+        var messagesPopup = document.getElementById("messages");
+        if (messagesPopup) {
+            messagesPopup.style.display = "block";
+            setTimeout(function() {
+                messagesPopup.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    </script>
+
+</body>

@@ -1,0 +1,20 @@
+/* Pop-up styling for both welcome and message pop-ups */
+.popup {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+#welcome-popup h2, .message-popup li {
+    color: #28a745;
+    margin: 0;
+}
+.message-popup li.error { color: #dc3545; }
+.message-popup li.success { color: #28a745; }

@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <link rel="stylesheet" href="{% static 'css/history.css' %}"> <!-- Link your CSS file if needed -->
+</head>
+<body>
+    <nav id="navbar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'predict_url' %}">Predict</a></li>
+            <li><a href="{% url 'history_view' %}">History</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>Prediction History</h1>
+        </header>
+        <main>
+            {% if history %}
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Predicted Label</th>
+                            <th>Prediction Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in history %}
+                            <tr>
+                                <td><a href="{{ record.url }}" target="_blank">{{ record.url }}</a></td>
+                                <td>{{ record.predicted_label }}</td>
+                                <td>{{ record.prediction_date|date:"Y-m-d H:i:s" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No predictions found.</p>
+            {% endif %}
+        </main>
+        <footer>
+            <a href="{% url 'predict_url' %}" class="btn-back">Back to Prediction Form</a>
+        </footer>
+    </div>
+</body>
+</html>

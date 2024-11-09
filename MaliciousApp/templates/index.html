@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    {% if messages %}
+    <ul id="messages" class="popup message-popup">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <img src="{% static 'media/back.webp' %}" alt="home_image" class="fullscreen-image">
+    
+    <nav id="navbar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li>
+    
+            {% if request.session.username %}
+                <!-- Show these links only if the user is logged in -->
+                <li><a href="{% url 'predict_url' %}">Predict</a></li>
+                <li><a href="{% url 'history_view' %}">History</a></li>
+            {% endif %}
+        </ul>
+        
+        <div class="auth-buttons">
+            {% if request.session.username %}
+                <span>Welcome, {{ request.session.username }}!</span>
+                <button type="submit"><a href='signout'>Sign Out</a></button>
+            {% else %}
+                <button type="submit"><a href='signin'>Sign In</a></button>
+                <button type="submit"><a href='signup'>Sign Up</a></button>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <div class="container">
+        <header>
+            <h1>Welcome to Our Site</h1>
+            <p>Explore our URL classification tool.</p>
+        </header>
+        <!-- Your main content here -->
+
+        
+    </div>
+
+
+    <script>
+        // Show the welcome popup for 10 seconds
+        var welcomePopup = document.getElementById("welcome-popup");
+        if (welcomePopup) {
+            welcomePopup.style.display = "block";
+            setTimeout(function() {
+                welcomePopup.style.display = "none";
+            }, 10000); // 10000 milliseconds = 10 seconds
+        }
+
+        // Show Django messages for 5 seconds
+        var messagesPopup = document.getElementById("messages");
+        if (messagesPopup) {
+            messagesPopup.style.display = "block";
+            setTimeout(function() {
+                messagesPopup.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    </script>
+
+</body>
+</html>

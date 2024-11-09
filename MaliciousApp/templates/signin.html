@@ -1,0 +1,50 @@
+{% load static %}
+<!-- templates/add_book.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+    <title>SIGN IN</title>
+</head>
+<body>
+    <h1>SIGN IN</h1>
+    {% if messages %}
+    <ul id="messages" class="popup message-popup">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+    <form action="/signin/" method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+    
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+    
+        <button type="submit">Sign In</button>
+    </form>
+
+
+
+    <script>
+        // Show Django messages for 5 seconds
+        var messagesPopup = document.getElementById("messages");
+        if (messagesPopup) {
+            messagesPopup.style.display = "block";
+            setTimeout(function() {
+                messagesPopup.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    </script>
+    
+    
+</body>
+
+</html>
