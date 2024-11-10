@@ -30,8 +30,12 @@ DEBUG = os.environ.get("DEBUG")
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS").split()
 
-LOGIN_URL = '/signin/'
+
+
+
+# LOGIN_URL = '/signin/'
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',

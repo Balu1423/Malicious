@@ -17,6 +17,14 @@ body {
     z-index: -1; /* Place the image behind other content */
 }
 
+#prehis {
+   padding-right:1000px;
+
+}
+button{
+    padding-left:500px;
+}
+
 /* Navbar Styling */
 #navbar {
     background-color: rgba(74, 144, 226, 0.8);
@@ -55,6 +63,10 @@ body {
 
 #navbar ul li a:hover {
     background-color: #357ab7;
+}
+
+#pre-his ul{
+
 }
 
 /* Authentication Buttons */

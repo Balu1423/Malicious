@@ -25,6 +25,7 @@ from .models import *
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -50,6 +51,8 @@ def signin(request):
             return redirect('signin')                
     context={'username':uname}
     return render(request,'signin.html',context)
+
+
 
 
 @api_view(['GET','POST'])
@@ -214,7 +217,7 @@ def analyze_url(url):
         form = URLForm()
 
     return render(request, 'predict.html', {'form': form})'''
-@login_required  
+# @login_required  
 def predict_url(request):
     if request.method == 'POST':
         form = URLForm(request.POST)
@@ -263,7 +266,7 @@ def predict_url(request):
     return render(request, 'predict.html', {'form': form})
 
 
-@login_required
+# @login_required
 def history_view(request):
     history = PredictionHistory.objects.all().order_by('-prediction_date')
     return render(request, 'history.html', {'history': history})

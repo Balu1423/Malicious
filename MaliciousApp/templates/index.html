@@ -22,16 +22,19 @@
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
     
-            {% if request.session.username %}
-                <!-- Show these links only if the user is logged in -->
-                <li><a href="{% url 'predict_url' %}">Predict</a></li>
-                <li><a href="{% url 'history_view' %}">History</a></li>
-            {% endif %}
+            
         </ul>
         
         <div class="auth-buttons">
             {% if request.session.username %}
+                
+                    <ul id="prehis">
+                        <li><a href="{% url 'predict_url' %}">Predict</a></li>
+                        <li><a href="{% url 'history_view' %}">History</a></li>
+                    </ul>
+                
                 <span>Welcome, {{ request.session.username }}!</span>
+                
                 <button type="submit"><a href='signout'>Sign Out</a></button>
             {% else %}
                 <button type="submit"><a href='signin'>Sign In</a></button>
