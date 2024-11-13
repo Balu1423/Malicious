@@ -82,24 +82,10 @@ def signout(request):
 def index(request):
     return render(request, 'index.html')
 
-'''# Load the saved model, vectorizer, and label encoder
+# Load the saved model, vectorizer, and label encoder
 model = joblib.load('trained_model.pkl')
 vectorizer = joblib.load('trained_vectorizer.pkl')
-label_encoder = joblib.load('label_encoder.pkl')'''
-
-# Manually load numpy and joblib
-import numpy as np
-import joblib
-
-# Function to load models with memory map
-def load_model_with_mmap(model_path):
-    # Use memory mapping to load the model (this is especially useful for large models)
-    return joblib.load(model_path, mmap_mode='r')
-
-# Load the saved model, vectorizer, and label encoder using memory map
-model = load_model_with_mmap('trained_model.pkl')
-vectorizer = load_model_with_mmap('trained_vectorizer.pkl')
-label_encoder = load_model_with_mmap('label_encoder.pkl')
+label_encoder = joblib.load('label_encoder.pkl')
 
 def analyze_url(url):
     features = {

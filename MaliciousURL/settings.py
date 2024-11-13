@@ -14,24 +14,32 @@ from pathlib import Path
 import dj_database_url
 import os
 from dotenv import load_dotenv
+load_dotenv()
 
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR/".eVar",".env"))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+'''SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS","").split()
+ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS","").split()'''
+
+SECRET_KEY = 'django-insecure-$rzr@k1rx8d*j2ph5choktqg!#%ug!6(_)f$jcd&ods+w@rqcs'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 
 
 
@@ -90,7 +98,7 @@ WSGI_APPLICATION = 'MaliciousURL.wsgi.application'
 # import pymysql
 # pymysql.install_as_MySQLdb()
 
-DATABASES = {
+'''DATABASES = {
     # 'default': dj_database_url.config(default='mysql://root:@localhost/Malicious')
     'default': dj_database_url.config(default="sqlite:///"+os.path.join(BASE_DIR,"db.sqlite3"))
 }
@@ -104,7 +112,14 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':3306,
     }
+}'''
+
+DATABASES = {
+    'default': dj_database_url.parse(
+        os.getenv('DATABASES_URL', 'postgresql://malidb_user:5UneGE1ntJy9GehVnzNbQijq9Tf84USJ@dpg-csqcmnjtq21c739pn2j0-a.oregon-postgres.render.com/malidb')
+    )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -148,6 +163,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

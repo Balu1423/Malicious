@@ -132,13 +132,13 @@ y = label_encoder.fit_transform(dataset['type'])
 # Step 4: Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Initialize the RandomForestClassifier
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+# Initialize RandomForest with fewer estimators and parallelization
+model = RandomForestClassifier(n_estimators=50, random_state=42, n_jobs=-1)
 
 # Measure start time
 start_time = time.time()
 
-# Train the model on the entire training set
+# Train the model
 model.fit(X_train, y_train)
 
 # Measure end time
@@ -160,4 +160,3 @@ print(f"Final Model saved at {model_path}")
 joblib.dump(vectorizer, 'MaliciousURL/trained_vectorizer.pkl')
 joblib.dump(label_encoder, 'MaliciousURL/label_encoder.pkl')
 print("Vectorizer and label encoder saved.")
- 
