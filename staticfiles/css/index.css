@@ -17,13 +17,6 @@ body {
     z-index: -1; /* Place the image behind other content */
 }
 
-#prehis {
-   padding-right:1000px;
-
-}
-button{
-    padding-left:500px;
-}
 
 /* Navbar Styling */
 #navbar {
@@ -65,16 +58,13 @@ button{
     background-color: #357ab7;
 }
 
-#pre-his ul{
-
-}
 
 /* Authentication Buttons */
 .auth-buttons {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding-right: 40px; /* Added left padding */
+    padding-right: 40px; /* Added padding-right */
 }
 
 .auth-buttons button {
@@ -110,7 +100,6 @@ button{
 header h1 {
     font-size: 2.5rem;
     color: #e4dcdc;
-    padding-top:30vi0px;
     margin-bottom: 10px;
 }
 
@@ -134,7 +123,7 @@ header p {
     .auth-buttons {
         flex-direction: column;
         gap: 5px;
-        padding-right: 15px; /* Remove padding-left for smaller screens */
+        padding-right: 15px; /* Reduce right padding for smaller screens */
     }
 
     .container {
@@ -144,10 +133,56 @@ header p {
     header h1 {
         font-size: 2rem;
     }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    /* Mobile view of popups */
+    .popup {
+        width: 80%; /* Reduce width for smaller screens */
+        padding: 15px;
+    }
+
+    #navbar ul li a {
+        padding: 6px 12px; /* Reduce padding for better alignment */
+    }
+
+    .auth-buttons button {
+        font-size: 14px; /* Make buttons slightly smaller */
+        padding: 6px 12px;
+    }
 }
 
+@media (max-width: 480px) {
+    /* Further adjustments for very small screens (e.g., phones in portrait mode) */
+    .container {
+        padding: 10px;
+    }
 
+    header h1 {
+        font-size: 1.8rem;
+    }
 
+    header p {
+        font-size: 0.9rem;
+    }
+
+    #navbar ul li a {
+        font-size: 14px; /* Smaller font size for links */
+    }
+
+    .auth-buttons button {
+        padding: 5px 10px;
+        font-size: 13px; /* Adjust button size */
+    }
+
+    /* Pop-up adjustments for very small screens */
+    .popup {
+        width: 90%; /* Make pop-up wider on very small screens */
+        padding: 10px;
+    }
+}
 
 /* Pop-up styling for both welcome and message pop-ups */
 .popup {
@@ -163,9 +198,12 @@ header p {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
+
 #welcome-popup h2, .message-popup li {
     color: #28a745;
     margin: 0;
 }
+
 .message-popup li.error { color: #dc3545; }
+
 .message-popup li.success { color: #28a745; }

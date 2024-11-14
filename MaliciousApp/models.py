@@ -12,9 +12,11 @@ class Auth(models.Model):
         return self.username
     
 class PredictionHistory(models.Model):
-    url = models.URLField(max_length=500)
-    predicted_label = models.CharField(max_length=100)
+    user = models.ForeignKey(Auth, on_delete=models.CASCADE, null=True, blank=True)
+    url = models.CharField(max_length=200)
+    predicted_label = models.CharField(max_length=200)
     prediction_date = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f"{self.url} - {self.predicted_label}"

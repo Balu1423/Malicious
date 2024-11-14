@@ -4,48 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction History</title>
-    <link rel="stylesheet" href="{% static 'css/history.css' %}"> <!-- Link your CSS file if needed -->
+    <link rel="stylesheet" href="{% static 'css/predict.css' %}">
+    <title>History</title>
 </head>
 <body>
+    {% if messages %}
+    <ul id="messages" class="popup message-popup">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <nav id="navbar">
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'predict_url' %}">Predict</a></li>
             <li><a href="{% url 'history_view' %}">History</a></li>
         </ul>
-    </nav>
-    <div class="container">
-        <header>
-            <h1>Prediction History</h1>
-        </header>
-        <main>
-            {% if history %}
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Predicted Label</th>
-                            <th>Prediction Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for record in history %}
-                            <tr>
-                                <td><a href="{{ record.url }}" target="_blank">{{ record.url }}</a></td>
-                                <td>{{ record.predicted_label }}</td>
-                                <td>{{ record.prediction_date|date:"Y-m-d H:i:s" }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No predictions found.</p>
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <form action="{% url 'signout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Sign Out</button>
+                </form>
             {% endif %}
-        </main>
-        <footer>
-            <a href="{% url 'predict_url' %}" class="btn-back">Back to Prediction Form</a>
-        </footer>
-    </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header>
+            <h1>History</h1>
+            <p>View your URL prediction history.</p>
+        </header>
+
+        <section class="history-section">
+            <h2>Your Prediction History</h2>
+            <ul>
+                {% for prediction in predictions %}
+                    <li>
+                        <p><strong>URL:</strong> {{ prediction.url }}</p>
+                        <p><strong>Predicted Label:</strong> {{ prediction.predicted_label }}</p>
+                        <p><strong>Date:</strong> {{ prediction.created_at }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        // Show Django messages for 5 seconds
+        var messagesPopup = document.getElementById("messages");
+        if (messagesPopup) {
+            messagesPopup.style.display = "block";
+            setTimeout(function() {
+                messagesPopup.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    </script>
 </body>
 </html>

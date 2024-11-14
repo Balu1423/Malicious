@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from rest_framework import status
 from .models import *
 from .serializers import *
@@ -60,16 +62,26 @@ def signup(request):
             "pass1": request.POST.get("pass1"),
             "pass2": request.POST.get("pass2")
         }
+        
+        # Check if both passwords match
         if data['pass1'] != data['pass2']:
-            messages.error(request, 'Both Passwords are not same')
+            messages.error(request, 'Both Passwords are not the same')
             return redirect('signup')
+
+        # Check if username already exists
+        if Auth.objects.filter(username=data['username']).exists():
+            messages.error(request, 'Username already exists. Please choose a different username.')
+            return redirect('signup')
+
+        # Serialize the data and save if valid
         sz = AuthSerializer(data=data)
         if sz.is_valid():
-            sz.save()
+            sz.save()  # Save new user to the database
             messages.success(request, "You have signed up successfully!")
             return redirect('signin')
         else:
-            messages.error(request, "There was an error with your signup.")
+            messages.error(request, "There was an error with your signup. Please check the form.")
+    
     return render(request, 'signup.html')
 
 @api_view(['GET', 'POST'])
@@ -82,10 +94,7 @@ def signout(request):
 def index(request):
     return render(request, 'index.html')
 
-'''# Load the saved model, vectorizer, and label encoder
-model = joblib.load('trained_model.pkl')
-vectorizer = joblib.load('trained_vectorizer.pkl')
-label_encoder = joblib.load('label_encoder.pkl')'''
+
 
 # Manually load numpy and joblib
 import numpy as np
@@ -195,48 +204,51 @@ def analyze_url(url):
 
     return feature_vector
 
+
 # @login_required  
 def predict_url(request):
     if request.method == 'POST':
         form = URLForm(request.POST)
         if form.is_valid():
             url = form.cleaned_data['url']
+
+            # Validate the URL
+            validate = URLValidator()
+            try:
+                validate(url)  # Will raise ValidationError if URL is invalid
+            except ValidationError:
+                form.add_error('url', 'Invalid URL. Please enter a valid URL.')
+                messages.error(request, 'Invalid URL. Please enter a valid URL.')  # Use messages framework
+                return render(request, 'predict.html', {'form': form})
+
             feature_vector = analyze_url(url)
-
-            # Ensure feature_vector is a 2D array of shape (1, n_features)
             feature_vector = np.array(feature_vector).reshape(1, -1)
-
-            # Predict the label and probabilities
-            probabilities = model.predict_proba(feature_vector)[0]  # Get probabilities
-            prediction = np.argmax(probabilities)  # Index of the highest probability
+            probabilities = model.predict_proba(feature_vector)[0]
+            prediction = np.argmax(probabilities)
             predicted_label = label_encoder.inverse_transform([prediction])[0]
 
-            # Store prediction history
-            PredictionHistory.objects.create(url=url, predicted_label=predicted_label)
+            # Store prediction history with the logged-in user
+            user = Auth.objects.get(username=request.session.get('username'))
+            PredictionHistory.objects.create(user=user, url=url, predicted_label=predicted_label)
 
-            # Generate a bar chart for the probabilities
-            labels = label_encoder.classes_  # Get the list of labels
+            # Generate chart and render as before
+            labels = label_encoder.classes_
             fig, ax = plt.subplots()
             ax.bar(labels, probabilities)
             ax.set_ylabel('Probability')
             ax.set_title('Prediction Probabilities')
-
-            # Save the plot to a PNG image in memory
             buffer = BytesIO()
             plt.savefig(buffer, format='png')
             buffer.seek(0)
             image_png = buffer.getvalue()
             buffer.close()
-
-            # Convert the PNG image to base64 string
             graph = base64.b64encode(image_png).decode('utf-8')
 
-            # Render the result within the same template
             return render(request, 'predict.html', {
                 'form': form,
                 'url': url,
                 'predicted_label': predicted_label,
-                'graph': graph  # Pass the graph to the template
+                'graph': graph
             })
     else:
         form = URLForm()
@@ -246,5 +258,10 @@ def predict_url(request):
 
 # @login_required
 def history_view(request):
-    history = PredictionHistory.objects.all().order_by('-prediction_date')
+    if 'username' in request.session:
+        user = Auth.objects.get(username=request.session['username'])
+        history = PredictionHistory.objects.filter(user=user).order_by('-prediction_date')
+    else:
+        history = None  # Or handle unauthenticated users as needed
     return render(request, 'history.html', {'history': history})
+

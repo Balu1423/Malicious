@@ -8,12 +8,21 @@
     <title>URL Prediction</title>
 </head>
 <body>
+
     <nav id="navbar">
         <ul>
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'predict_url' %}">Predict</a></li>
             <li><a href="{% url 'history_view' %}">History</a></li>
         </ul>
+        {% if user.is_authenticated %}
+        <div class="auth-buttons">
+            <form action="{% url 'signout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Sign Out</button>
+            </form>
+        </div>
+        {% endif %}
     </nav>
 
     <main class="container">
@@ -30,13 +39,11 @@
                 <button type="submit" class="btn-submit">Predict</button>
             </form>
 
-            <!-- Display error message if available -->
             {% if error %}
                 <p class="error-message">{{ error }}</p>
             {% endif %}
         </section>
 
-        <!-- Display the prediction result if available -->
         {% if url and predicted_label %}
         <section class="result-section {% if predicted_label == 'benign' %}safe-background{% else %}unsafe-background{% endif %}">
             <h2>Prediction Result</h2>
@@ -50,10 +57,21 @@
                 <p class="unsafe">The above URL is Not Safe to Browse</p>
                 <a href="{{ url }}" target="_blank" class="btn unsafe-btn">Proceed with Caution</a>
             {% endif %}
-            <h3>Prediction Probabilities:</h3>
-            <img src="data:image/png;base64,{{ graph }}" alt="Prediction Probabilities">
+            
         </section>
         {% endif %}
     </main>
+
+    <script>
+        // Show Django messages for 5 seconds
+        var messagesPopup = document.getElementById("messages");
+        if (messagesPopup) {
+            messagesPopup.style.display = "block";
+            setTimeout(function() {
+                messagesPopup.style.display = "none";
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+    </script>
+
 </body>
 </html>

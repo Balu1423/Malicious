@@ -4,3 +4,5 @@ from .models import *
 
 admin.site.register(Auth)
 
+admin.site.register(PredictionHistory)
+

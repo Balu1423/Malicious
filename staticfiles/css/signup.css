@@ -9,6 +9,13 @@ body {
     align-items: center;
     height: 100vh; /* Full screen height */
     color: #333;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Ensure full-width and no horizontal overflow */
+html, body {
+    width: 100%; /* Make sure body and html are contained within the viewport */
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Heading */
@@ -17,9 +24,8 @@ h1 {
     font-size: 2.5rem;
     color: #4a90e2; /* Soft blue for the heading */
     margin-bottom: 20px;
-    padding-right:40px;
+    padding-right: 40px;
 }
-
 
 /* Form Styling */
 form {
@@ -31,6 +37,7 @@ form {
     max-width: 400px;
     text-align: center;
     margin-top: 20px;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 /* Input Fields */
@@ -41,7 +48,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     border: 2px solid #ccc;
     border-radius: 5px;
     font-size: 1rem;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
     transition: border-color 0.3s ease;
 }
 
@@ -72,9 +79,9 @@ button:hover {
     form {
         padding: 20px;
         width: 90%;
+        margin-top: 10px;
     }
 }
-
 
 /* Pop-up styling for both welcome and message pop-ups */
 .popup {
@@ -90,9 +97,16 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
+
 #welcome-popup h2, .message-popup li {
     color: #28a745;
     margin: 0;
 }
-.message-popup li.error { color: #dc3545; }
-.message-popup li.success { color: #28a745; }
+
+.message-popup li.error {
+    color: #dc3545;
+}
+
+.message-popup li.success {
+    color: #28a745;
+}

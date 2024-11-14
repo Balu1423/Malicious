@@ -16,9 +16,7 @@
             <li class="{{ message.tags }}">{{ message }}</li>
         {% endfor %}
     </ul>
-{% endif %}
-
-
+    {% endif %}
 
     <form action="/signin/" method="POST">
         {% csrf_token %}
@@ -31,7 +29,8 @@
         <button type="submit">Sign In</button>
     </form>
 
-
+    <p>Don't have an account? <a href="/signup/">Sign Up</a></p> <!-- Link to Sign Up page -->
+    <p>Back to Home <a href="{% url 'index' %}">Home</a></p>
 
     <script>
         // Show Django messages for 5 seconds
@@ -44,7 +43,5 @@
         }
     </script>
     
-    
 </body>
-
 </html>

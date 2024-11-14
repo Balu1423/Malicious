@@ -9,6 +9,11 @@ body {
     align-items: center;
     height: 100vh; /* Full screen height */
     color: #333;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+html, body {
+    width: 100%; /* Ensure the body and html elements don't exceed the screen width */
 }
 
 /* Heading */
@@ -17,10 +22,8 @@ h1 {
     font-size: 2.5rem;
     color: #4a90e2; /* Soft blue for the heading */
     margin-bottom: 20px;
-    padding-right:40px;
+    padding-right: 40px;
 }
-
-
 
 /* Form Styling */
 form {
@@ -31,6 +34,7 @@ form {
     width: 100%;
     max-width: 400px;
     text-align: center;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
 /* Input Fields */
@@ -75,7 +79,6 @@ button:hover {
     }
 }
 
-
 /* Pop-up styling for both welcome and message pop-ups */
 .popup {
     display: none; /* Initially hidden */
@@ -90,9 +93,16 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
+
 #welcome-popup h2, .message-popup li {
     color: #28a745;
     margin: 0;
 }
-.message-popup li.error { color: #dc3545; }
-.message-popup li.success { color: #28a745; }
+
+.message-popup li.error {
+    color: #dc3545;
+}
+
+.message-popup li.success {
+    color: #28a745;
+}
