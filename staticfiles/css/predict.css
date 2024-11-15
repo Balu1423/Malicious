@@ -61,6 +61,7 @@ body {
     color: white;
     border: none;
     padding: 8px 15px;
+    margin-right:40px;
     border-radius: 5px;
     font-weight: bold;
     cursor: pointer;
@@ -83,24 +84,87 @@ body {
 }
 /* Main Container */
 .container {
-    padding: 20px;
     max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 160px; /* Adjusted for fixed navbar */
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Section */
-header h1 {
-    font-size: 2.5rem;
-    color: #e4dcdc;
-    margin-bottom: 10px;
+/* Form Section */
+.form-section {
+    margin-top: 20px;
 }
 
-header p {
-    font-size: 1.1rem;
-    color: #e0d6d6;
-    margin-bottom: 20px;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-size: 1.1em;
+}
+
+input[type="url"] {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Prediction Results */
+.result-section {
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.safe-background {
+    background-color: #d4edda;
+}
+
+.unsafe-background {
+    background-color: #f8d7da;
+}
+
+.safe, .unsafe {
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+.safe-btn, .unsafe-btn {
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.safe-btn {
+    background-color: #28a745;
+}
+
+.unsafe-btn {
+    background-color: #dc3545;
+}
+
+.safe-btn:hover, .unsafe-btn:hover {
+    opacity: 0.8;
 }
 /* Pop-up message container */
 .popup-message {
