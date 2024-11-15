@@ -27,7 +27,7 @@ from .models import *
 import matplotlib.pyplot as plt
 import base64
 from django.contrib.auth import authenticate, login
-
+import re
 
 # Create your views here.
 def home(request):
@@ -205,22 +205,30 @@ def analyze_url(url):
     return feature_vector
 
 
+
 # @login_required  
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+from django.shortcuts import render, redirect
+
 def predict_url(request):
+    form = URLForm(request.POST or None)
+    
     if request.method == 'POST':
-        form = URLForm(request.POST)
         if form.is_valid():
             url = form.cleaned_data['url']
 
-            # Validate the URL
-            validate = URLValidator()
-            try:
-                validate(url)  # Will raise ValidationError if URL is invalid
-            except ValidationError:
-                form.add_error('url', 'Invalid URL. Please enter a valid URL.')
-                messages.error(request, 'Invalid URL. Please enter a valid URL.')  # Use messages framework
-                return render(request, 'predict.html', {'form': form})
+            # Use Django's built-in URLValidator
+            validator = URLValidator()
 
+            try:
+                validator(url)  # Perform URL validation
+            except ValidationError as e:
+                # If URL is invalid, add error message using Django's messages framework
+                messages.error(request, "Invalid URL format. Please enter a valid URL starting with http:// or https://.")
+                return redirect('predict')  # Redirect back to the same page (assumes 'predict' is the name of the view)
+            
             feature_vector = analyze_url(url)
             feature_vector = np.array(feature_vector).reshape(1, -1)
             probabilities = model.predict_proba(feature_vector)[0]
@@ -250,18 +258,35 @@ def predict_url(request):
                 'predicted_label': predicted_label,
                 'graph': graph
             })
-    else:
-        form = URLForm()
 
-    return render(request, 'predict.html', {'form': form})
+        else:
+            # If form is invalid, show a general error message
+            messages.error(request, "Invalid form submission. Please check the entered URL.")
+            return render(request, 'predict.html', {'form': form})
+
+    else:
+        # Handle GET request (initial page load)
+        return render(request, 'predict.html', {'form': form})
+
 
 
 # @login_required
+from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
+
 def history_view(request):
-    if 'username' in request.session:
-        user = Auth.objects.get(username=request.session['username'])
-        history = PredictionHistory.objects.filter(user=user).order_by('-prediction_date')
-    else:
-        history = None  # Or handle unauthenticated users as needed
+    history = None
+    try:
+        if 'username' in request.session:
+            username = request.session.get('username')
+            # print(f"Session username: {username}")  # Debugging output
+            user = Auth.objects.get(username=username)
+            history = PredictionHistory.objects.filter(user=user).order_by('-prediction_date')
+    except ObjectDoesNotExist:
+        print("User or prediction history not found.")  # Debugging output
+    except Exception as e:
+        print(f"Unexpected error: {e}")  # Log any other unexpected errors
+
     return render(request, 'history.html', {'history': history})
+
 

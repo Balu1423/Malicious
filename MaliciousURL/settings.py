@@ -116,9 +116,11 @@ DATABASES = {
 
 DATABASES = {
     'default': dj_database_url.parse(
-        os.getenv('DATABASES_URL', 'postgresql://malidb_user:5UneGE1ntJy9GehVnzNbQijq9Tf84USJ@dpg-csqcmnjtq21c739pn2j0-a.oregon-postgres.render.com/malidb')
+        os.getenv('DATABASES_URL', 'postgresql://malidb_user:5UneGE1ntJy9GehVnzNbQijq9Tf84USJ@dpg-csqcmnjtq21c739pn2j0-a.oregon-postgres.render.com/malidb'),
+        conn_max_age=600, ssl_require=True
     )
 }
+
 
 
 # Password validation
@@ -156,6 +158,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [BASE_DIR / 'static']
 # STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # or provide the full path: 'C:/Users/balaj/.../static'

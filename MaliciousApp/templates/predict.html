@@ -5,25 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/predict.css' %}">
+
     <title>URL Prediction</title>
 </head>
 <body>
-
-    <nav id="navbar">
+    {% if messages %}
+    <div id="popup-message" class="popup-message">
         <ul>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'predict_url' %}">Predict</a></li>
-            <li><a href="{% url 'history_view' %}">History</a></li>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
         </ul>
-        {% if user.is_authenticated %}
-        <div class="auth-buttons">
-            <form action="{% url 'signout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Sign Out</button>
-            </form>
-        </div>
-        {% endif %}
-    </nav>
+    </div>
+
+{% endif %}
+
+
+<nav id="navbar">
+    <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="{% url 'predict_url' %}">Predict</a></li>
+        <li><a href="{% url 'history_view' %}">History</a></li>
+    </ul>
+    <!-- <div class="auth-buttons">
+        <span>Welcome, {{ request.session.username }}!</span>
+        <button type="submit"><a href="{% url 'signout' %}">Sign Out</a></button>
+    </div> -->
+</nav>
 
     <main class="container">
         <header>
@@ -32,16 +40,14 @@
         </header>
 
         <section class="form-section">
-            <form method="post">
+            <form method="post" autocomplete="off">
                 {% csrf_token %}
                 <label for="url">Enter URL:</label>
                 {{ form.url }}
                 <button type="submit" class="btn-submit">Predict</button>
             </form>
-
-            {% if error %}
-                <p class="error-message">{{ error }}</p>
-            {% endif %}
+            
+            
         </section>
 
         {% if url and predicted_label %}
@@ -62,16 +68,21 @@
         {% endif %}
     </main>
 
-    <script>
-        // Show Django messages for 5 seconds
-        var messagesPopup = document.getElementById("messages");
-        if (messagesPopup) {
-            messagesPopup.style.display = "block";
-            setTimeout(function() {
-                messagesPopup.style.display = "none";
-            }, 5000); // 5000 milliseconds = 5 seconds
-        }
-    </script>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const popup = document.getElementById('popup-message');
 
+        if (popup) {
+            // Show the pop-up message for 5 seconds
+            popup.style.display = 'block';
+
+            setTimeout(() => {
+                popup.style.opacity = '0'; // Fade-out effect
+                setTimeout(() => popup.style.display = 'none', 500); // Hide after fade-out
+            }, 5000);
+        }
+    });
+</script>
 </body>
 </html>
