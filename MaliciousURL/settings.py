@@ -116,7 +116,7 @@ DATABASES = {
 
 DATABASES = {
     'default': dj_database_url.parse(
-        os.getenv('DATABASES_URL', 'postgresql://maliciousdb_user:YmJ84gwC92dkUEHW6JmXBOaL10uHJSIJ@dpg-cue54fdds78s73a73vl0-a.oregon-postgres.render.com/maliciousdbb'),
+        os.getenv('DATABASES_URL', 'postgresql://maliciousdb_user:YmJ84gwC92dkUEHW6JmXBOaL10uHJSIJ@dpg-cue54fdds78s73a73vl0-a.oregon-postgres.render.com/maliciousdb'),
         conn_max_age=600, ssl_require=True
     )
 }
