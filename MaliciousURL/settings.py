@@ -26,15 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-'''SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-ALLOWED_HOSTS += os.environ.get("ALLOWED_HOSTS","").split()'''
-
-SECRET_KEY = 'django-insecure-$rzr@k1rx8d*j2ph5choktqg!#%ug!6(_)f$jcd&ods+w@rqcs'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -98,11 +92,8 @@ WSGI_APPLICATION = 'MaliciousURL.wsgi.application'
 # import pymysql
 # pymysql.install_as_MySQLdb()
 
-'''DATABASES = {
-    # 'default': dj_database_url.config(default='mysql://root:@localhost/Malicious')
-    'default': dj_database_url.config(default="sqlite:///"+os.path.join(BASE_DIR,"db.sqlite3"))
-}
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -115,11 +106,9 @@ DATABASES = {
 }'''
 
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.getenv('DATABASES_URL', 'postgresql://maliciousdb_user:YmJ84gwC92dkUEHW6JmXBOaL10uHJSIJ@dpg-cue54fdds78s73a73vl0-a.oregon-postgres.render.com/maliciousdb'),
-        conn_max_age=600, ssl_require=True
-    )
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
 }
+
 
 
 
